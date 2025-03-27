@@ -40,7 +40,7 @@ jobs:
       - name: Package artifacts
         run: |
           mkdir -p release
-          tar -czvf "release/pagemap-${VERSION}-linux-arm64.tar.gz" -C output .
+          tar -czvf release/pagemap-${VERSION}-linux-arm64.tar.gz -C output .
 
       # 创建或更新 Release（自动处理重复标签）
       - name: Upload to GitHub Release
@@ -49,6 +49,6 @@ jobs:
           tag_name: v${{ env.VERSION }}
           name: "ARM64 Build v${{ env.VERSION }}"
           files: |
-            release/pagemap-${VERSION}-linux-arm64.tar.gz
+            release/*.tar.gz
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
