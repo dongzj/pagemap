@@ -2,9 +2,9 @@
 OUTPUT_DIR = output
 ARCH ?= $(shell uname -m)
 
-CC = gcc
+CC = $(CROSS_COMPILE)gcc
 CFLAGS = -std=c99
-ifeq ($(ARCH),aarch64)
+ifeq ($(ARCH),arm64)
     CFLAGS += -march=armv8-a
 else ifeq ($(ARCH),x86_64)
     CFLAGS += -march=x86-64
