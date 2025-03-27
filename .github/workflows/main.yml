@@ -45,12 +45,18 @@ jobs:
     - name: Build for ${{ matrix.arch }}
       run: |
         make ARCH=${{ matrix.arch }} VERSION=$VERSION
-        
+
+    - name: Debug variables
+      run: |
+        echo "VERSION=${VERSION}"
+        echo "SUFFIX=${{ matrix.suffix }}"
+        echo "Full path: release/pagemap-${VERSION}-linux-${{ matrix.suffix }}.tar.gz"   
+
     # 准备发布文件
     - name: Package artifacts
       run: |
         mkdir -p release
-        tar -czvf release/pagemap-${VERSION}-linux-${matrix.suffix}.tar.gz -C output .
+        tar -czvf release/pagemap-${VERSION}-linux-${{ matrix.suffix }}.tar.gz -C output .
         
     # 创建临时 Release（如果尚未存在）
     - name: Create Release
@@ -71,6 +77,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release/pagemap-${VERSION}-linux-${matrix.suffix}.tar.gz
-        asset_name: pagemap-${VERSION}-linux-${matrix.suffix}.tar.gz
+        asset_path: ./release/pagemap-${VERSION}-linux-${{ matrix.suffix }}.tar.gz
+        asset_name: pagemap-${VERSION}-linux-${{ matrix.suffix }}.tar.gz
         asset_content_type: application/gzip
