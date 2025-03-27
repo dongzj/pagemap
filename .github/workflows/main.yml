@@ -58,26 +58,13 @@ jobs:
         mkdir -p release
         tar -czvf release/pagemap-${VERSION}-linux-${{ matrix.suffix }}.tar.gz -C output .
         
-    # 创建临时 Release（如果尚未存在）
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # 使用更健壮的 Release 创建方式
+    - name: Create or Update Release
+      uses: softprops/action-gh-release@v1
       with:
         tag_name: ${{ env.TAG_NAME }}
-        release_name: Release ${{ env.TAG_NAME }}
-        draft: false
-        prerelease: false
-        allow_updates: true
-
-    # 上传构建产物到 Release
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
+        name: Release ${{ env.TAG_NAME }}
+        files: |
+          release/*.tar.gz
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release/pagemap-${VERSION}-linux-${{ matrix.suffix }}.tar.gz
-        asset_name: pagemap-${VERSION}-linux-${{ matrix.suffix }}.tar.gz
-        asset_content_type: application/gzip
