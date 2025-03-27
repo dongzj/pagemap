@@ -69,7 +69,8 @@ jobs:
         release_name: Release ${{ env.TAG_NAME }}
         draft: false
         prerelease: false
-        
+        allow_updates: true
+
     # 上传构建产物到 Release
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
