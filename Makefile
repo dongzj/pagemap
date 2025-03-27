@@ -3,7 +3,7 @@ OUTPUT_DIR = output
 ARCH ?= $(shell uname -m)
 
 CC = $(CROSS_COMPILE)gcc
-CFLAGS = -std=c99
+CFLAGS = -std=c99 -static
 ifeq ($(ARCH),arm64)
     CFLAGS += -march=armv8-a
 else ifeq ($(ARCH),x86_64)
@@ -15,7 +15,7 @@ all: output/pagemap output/pagemap2
 
 output/pagemap: pagemap.c
 	mkdir -p output
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS)  $^ -o $@
 output/pagemap2: pagemap2.c
 	mkdir -p output
 	$(CC) $(CFLAGS) $^ -o $@
