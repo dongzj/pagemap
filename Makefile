@@ -1,16 +1,25 @@
 # Makefile for pagemap
+OUTPUT_DIR = output
+ARCH ?= $(shell uname -m)
 
 CC = gcc
 CFLAGS = -std=c99
+ifeq ($(ARCH),aarch64)
+    CFLAGS += -march=armv8-a
+else ifeq ($(ARCH),x86_64)
+    CFLAGS += -march=x86-64
+endif
 
 .PHONY: all
-all: pagemap pagemap2
+all: output/pagemap output/pagemap2
 
-pagemap: pagemap.c
+output/pagemap: pagemap.c
+	mkdir -p output
 	$(CC) $(CFLAGS) $^ -o $@
-pagemap2: pagemap2.c
+output/pagemap2: pagemap2.c
+	mkdir -p output
 	$(CC) $(CFLAGS) $^ -o $@
 
 .PHONY: clean
 clean:
-	-rm pagemap pagemap2
+	-rm output/pagemap output/pagemap2
