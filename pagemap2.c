@@ -13,11 +13,12 @@
 static void print_page(uint64_t address, uint64_t data,
     const char *lib_name) {
 
-    printf("0x%-16lx : pfn %-16lx soft-dirty %ld file/shared %ld "
+    printf("0x%-16lx : pfn %-16lx soft-dirty %ld accessed %ld file/shared %ld "
         "swapped %ld present %ld library %s\n",
         address,
         data & 0x7fffffffffffff,
         (data >> 55) & 1,
+        (data >> 58) & 1,
         (data >> 61) & 1,
         (data >> 62) & 1,
         (data >> 63) & 1,
